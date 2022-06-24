@@ -43,6 +43,22 @@
     </div>
 
     <div class="mb-3">
+        <label for="tag_id" class="form-label">Tags</label>
+        <select multiple class="custom-select" name="tags[]" id="tag_id" aria-label="Tag">
+            <option value="" disabled>Select a Tags</option>
+            @forelse($tags as $tag)
+            @if($errors->any())
+            <option value="{{$tag->id}}" {{in_array($tag->id,old('tags')) ? 'selected' : ''}}>{{$tag->name}}</option>
+            @else
+            <option value="{{$tag->id}}" {{$post->tags->contains($tag->id) ? 'selected' : ''}}>{{$tag->name}}</option>
+            @endif
+            @empty
+            <option>No Tags</option>
+            @endforelse
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label for="content" class="form-label">Content</label>
         <textarea class="form-control" name="content" id="content" rows="3">{{$post->content}}</textarea>
     </div>

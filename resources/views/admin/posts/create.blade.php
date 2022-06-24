@@ -42,12 +42,18 @@
     </div>
 
     <div class="mb-3">
-        <label for="tags" class="form-label">Tags</label>
-        <select multiple name="tag" id="tag">
-            <option value="">Select a category</option>
-            @foreach($tags as $tag)
-                <option value="{{$tag->id}}" {{old('tag') == $tag->id ? 'selected' : ''}}>{{$tag->name}}</option>
-            @endforeach
+        <label for="tag_id" class="form-label">Tags</label>
+        <select multiple class="custom-select" name="tags[]" id="tag_id" aria-label="Tag">
+            <option value="" disabled>Select a Tags</option>
+            @forelse($tags as $tag)
+            @if($errors->any())
+            <option value="{{$tag->id}}" {{in_array($tag->id, old('tags',[])) ? 'selected' : ''}}>{{$tag->name}}</option>
+            @else
+            <option value="{{$tag->id}}">{{$tag->name}}</option>
+            @endif
+            @empty
+            <option>No Tags</option>
+            @endforelse
         </select>
     </div>
 

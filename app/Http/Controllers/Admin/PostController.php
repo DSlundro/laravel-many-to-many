@@ -18,7 +18,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderByDesc('id')->get();
-      /*   dd($posts); */
+        //dd($posts);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -32,8 +32,6 @@ class PostController extends Controller
         //
         $categories = Category::orderByDesc('id')->get();
         $tags = Tag::orderByDesc('id')->get();
-
-
 
         return view('admin.posts.create', compact('categories','tags'));
     }
