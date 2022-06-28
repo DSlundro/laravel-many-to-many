@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use App\Mail\SendNewMail;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Post;
@@ -69,7 +70,7 @@ class PostController extends Controller
         $new_post = Post::create($val_data);
         $new_post->tags()->attach($request->tags );
 
-
+        Mail::to($request->user())->send(new SendNewMail($new_post) );
         return redirect()->route('admin.posts.index')->with('message','Post Created Successfully');
 
     }
@@ -158,7 +159,7 @@ class PostController extends Controller
         //
         $post->delete();
         Storage::delete($post->cover_image);
-        
+
         return redirect()->route('admin.posts.index')->with('message','Post Deleted Successfully');;
     }
 }
