@@ -28,7 +28,7 @@
                 <td>{{$post->category ? $post->category->name : 'Not assigned'}}</td>
                 <td width="400">{{mb_strimwidth($post->content, 0, 300, "...")}}</td>
                 <td>{{$post->slug}}</td>
-                <td><img width="150" src="{{$post->cover_image}}" alt="{{$post->title}}"></td>
+                <td><img width="150" src="{{ asset('storage/' . $post->cover_image)}}" alt="{{$post->title}}"></td>
                 <td class="d-flex flex-column" style="gap: 10px"> 
                     <a class="btn btn-primary" href="{{ route('admin.posts.show', $post->slug) }}">View</a>
                     <a class="btn btn-warning" href="{{ route('admin.posts.edit', $post->slug) }}">Edit</a>

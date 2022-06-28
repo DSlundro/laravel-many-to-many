@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -49,6 +51,20 @@ class PostController extends Controller
         $slug = Post::generateSlug($request->title);
         $val_data['slug'] = $slug;
 
+        if($request->hasFile('cover_image')){
+            //validation
+            $request->validate([
+                'cover_image' => 'nullable|image|max:1000'
+            ]);
+            //save
+            //take path
+            $path = Storage::put('post_images', $request->cover_image);
+
+
+            //pass the path of array
+            $val_data['cover_image'] = $path ;
+
+        };
 
         $new_post = Post::create($val_data);
         $new_post->tags()->attach($request->tags );
@@ -108,6 +124,22 @@ class PostController extends Controller
        /*  $slug = Str::slug($request->title,'-'); */
         $val_data['slug'] = $slug;
 
+        if($request->hasFile('cover_image')){
+            //validation
+            $request->validate([
+                'cover_image' => 'nullable|image|max:500'
+            ]);
+            //save
+            Storage::delete($post->cover_image);
+            //take path
+            $path = Storage::put('post_images', $request->cover_image);
+
+
+            //pass the path of array
+            $val_data['cover_image'] = $path ;
+
+        };
+
         $post->tags()->sync($request->tags);
         $post->update($val_data);
 
@@ -125,7 +157,8 @@ class PostController extends Controller
     {
         //
         $post->delete();
-
+        Storage::delete($post->cover_image);
+        
         return redirect()->route('admin.posts.index')->with('message','Post Deleted Successfully');;
     }
 }

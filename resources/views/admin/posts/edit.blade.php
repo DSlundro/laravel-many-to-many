@@ -6,7 +6,7 @@
 
 
 
-<form action="{{route('admin.posts.update', $post->slug)}}" method="post">
+<form action="{{route('admin.posts.update', $post->slug)}}" method="post" method="post" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -26,10 +26,15 @@
         <small id="titleHelper" class="text-muted">Type the post title, max: 150 </small>
     </div>
 
-    <div class="mb-3">
-        <label for="cover_image" class="form-label">Cover Image</label>
-        <input type="text" name="cover_image" id="cover_image" class="form-control" placeholder="Learn php article" aria-describedby="cover_imageHelper" value="{{$post->cover_image}}">
-        <small id="cover_imageHelper" class="text-muted">Url image</small>
+    <div class="mb-3 d-flex align-items-end">
+        <div class="media d-flex flex-column" style="margin-right:30px">
+            <label for="cover_image" class="form-label">Cover Image</label>
+            <img  class="shadow" width="150" src="{{asset('storage/' .  $post->cover_image)}}" alt="">
+        </div>
+        <div>
+            <small id="cover_imageHelper" class="text-muted">Url image</small>
+            <input type="file" name="cover_image" id="cover_image" class="form-control" placeholder="Learn php article" aria-describedby="cover_imageHelper" value="{{$post->cover_image}}">
+        </div>
     </div>
 
     <div class="mb-3">
